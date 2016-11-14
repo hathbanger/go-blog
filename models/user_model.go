@@ -2,10 +2,10 @@ package models
 
 import (
 	"time"
-	// "fmt"
+	"fmt"
 
 	"labix.org/v2/mgo/bson"
-	"github.com/user-base/store"
+	"github.com/go-blog/store"
 )
 
 type User struct {
@@ -14,6 +14,12 @@ type User struct {
 	Timestamp 	time.Time	       `json:"time",bson:"time,omitempty"`
 	Username	string           `json:"username",bson:"username,omitempty"`
 	Password	string           `json:"password",bson:"password,omitempty"`
+}
+
+type TokenedUser struct {
+	Id 		bson.ObjectId 	`json:"id"`
+	Username	string		`json:"username"`
+	Token		string		`json:"token"`
 }
 
 func NewUser(username string, password string) *User {
@@ -37,11 +43,15 @@ func (u *User) Save() error {
 		panic(err)
 	}
 
-	err = collection.Insert(&User{
-		Id: u.Id,
-		Timestamp: u.Timestamp,
-		Username: u.Username,
-		Password: u.Password})
+	user := User {
+		Id:		u.Id,
+		Timestamp:	u.Timestamp,
+		Username:	u.Username,
+		Password: 	u.Password,
+	}
+
+
+	err = collection.Insert(user)
 	if err != nil {
 		return err
 	}
@@ -70,6 +80,35 @@ func FindUser(username string) (User, error) {
 	return user, err
 }
 
+func FindUserById(user_id string) (*User, error) {
+	session, err := store.ConnectToDb()
+	defer session.Close()
+	if err != nil {
+		panic(err)
+	}
+
+
+
+	collection, err := store.ConnectToCollection(session, "users")
+	if err != nil {
+		//panic(err)
+		return &User{}, err
+	}
+
+
+
+	oid := bson.ObjectIdHex(user_id)
+	fmt.Println("wow:", oid)
+	user := User{}
+	// err = collection.Find(bson.M{"id": bson.ObjectIdHex(user_id)}).One(&user)
+	err = collection.FindId(oid).One(&user)
+	if err != nil {
+		panic(err)
+		//return &user, err
+	}
+
+	return &user, err
+}
 
 func GetAllUsers() ([]*User, error){
 

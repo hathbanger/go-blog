@@ -4,7 +4,7 @@ import (
 	"time"
 	"net/http"
 
-	"github.com/user-base/models"
+	"github.com/go-blog/models"
 	"github.com/labstack/echo"
 	"github.com/dgrijalva/jwt-go"
 )
@@ -58,12 +58,39 @@ func Login(c echo.Context) error {
 		if err != nil {
 			return err
 		}
-		return c.JSON(http.StatusOK, map[string]string{
-			"token": t,
-		})
+
+		tokened_user := models.TokenedUser{
+			Id:		user.Id,
+			Username:	user.Username,
+			Token:		t,
+		}
+
+		return c.JSON(http.StatusOK, tokened_user)
+
+		
+		// return c.JSON(http.StatusOK, map[string]string{
+		// 	"token": t,
+		// })
 	}
 
 	return echo.ErrUnauthorized
+}
+
+func GetUserById(c echo.Context) error {
+	id := c.Param("user_id")
+
+
+	user, err := models.FindUserById(id)
+	if err != nil {
+		panic(err)
+
+	}
+
+	if user.Id != "" /*&& user.Username != "" */ {
+		return c.JSON(http.StatusOK, user)
+	} else {
+		return c.JSON(http.StatusNotFound, "not found")
+	}
 }
 
 func GetAllUsers(c echo.Context) error {

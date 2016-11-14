@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/user-base/server"
+	"github.com/go-blog/server"
 )
 
 func main() {

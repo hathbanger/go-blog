@@ -34,3 +34,21 @@ func ConnectToCollection(session *mgo.Session, collection_str string) (*mgo.Coll
 
 	return collection, err
 }
+
+func ConnectToPostCollection(session *mgo.Session, collection_str string) (*mgo.Collection, error) {
+	collection := session.DB("test").C(collection_str)
+	index := mgo.Index{
+		Key:        []string{"username"},
+		Unique:     false,
+		DropDups:   true,
+		Background: true,
+		Sparse:     true,
+	}
+
+	err := collection.EnsureIndex(index)
+	if err != nil {
+		panic(err)
+	}
+
+	return collection, err
+}

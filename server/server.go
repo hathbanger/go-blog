@@ -2,12 +2,12 @@ package server
 
 import (
 	"fmt"
-
-
+	
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/echo/engine/standard"
 )
+
 
 
 func Run() {
@@ -28,13 +28,16 @@ func Run() {
 
 
 // ROUTES
+	e.Static("/photos", "photos")	
 	e.GET("/", accessible)
 	r.GET("", restricted)
 	e.GET("/user/:username", GetUser)
+	e.GET("/user/id/:user_id", GetUserById)
 	e.POST("/user", CreateUser)
 	e.GET("/users", GetAllUsers)
+	e.POST("/post/create", CreatePost)
+	e.GET("/post/all", GetAllPosts)
 	e.POST("/login", Login)
-
 
 	fmt.Println("Server now running on port: 1323")
 	e.Run(standard.New(":1323"))
