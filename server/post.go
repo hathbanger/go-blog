@@ -59,7 +59,7 @@ func CreatePost(c echo.Context) error {
 	}
 
 
-	imgurl := "http://localhost:1323/photos/" + file.Filename
+	imgurl := "http://api.catsrassholes.com/photos/" + file.Filename
 	// return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully with fields name=%s and email=%s.</p>", file.Filename, title, body))
 
 
