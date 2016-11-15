@@ -21,8 +21,8 @@ func Run() {
 
 // CORS
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-	 AllowOrigins: []string{"*"},
-	 AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
+		AllowOrigins: []string{"https://catsrassholes.com", "https://www.catsrassholes.com"},
+		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 
 
