@@ -37,7 +37,7 @@ func Run() {
 	e.GET("/users", GetAllUsers)
 	e.POST("/post/create", CreatePost)
 	e.POST("/post/delete/:post_id", RemovePost)
-	e.POST("/post/like/:post_id", LikePost)
+	// e.POST("/post/like/:post_id", LikePost)
 	e.GET("/post/all", GetAllPosts)
 	e.POST("/login", Login)
 
