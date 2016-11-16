@@ -59,7 +59,7 @@ func CreatePost(c echo.Context) error {
 	}
 
 
-	imgurl := "http://api.catsrassholes.com/photos/" + file.Filename
+	imgurl := "https://api.catsrassholes.com/photos/" + file.Filename
 	// return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully with fields name=%s and email=%s.</p>", file.Filename, title, body))
 
 
@@ -73,6 +73,16 @@ func CreatePost(c echo.Context) error {
 	return c.JSON(http.StatusOK, post)
 }
 
+
+func RemovePost(c echo.Context) error {
+	post_id := c.Param("post_id")
+	err := models.DeletePost(post_id)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, "not found")
+	}
+
+	return c.JSON(http.StatusOK, "worked!!")
+}
 
 
 

@@ -2,7 +2,7 @@ package models
 
 import (
 	"time"
-	// "fmt"
+	"fmt"
 
 	"labix.org/v2/mgo/bson"
 	"github.com/go-blog/store"
@@ -58,7 +58,19 @@ func (p *Post) Save() error {
 	return nil
 }
 
+func DeletePost(id string) error {
+	session, err := store.ConnectToDb()
 
+	collection := session.DB("test").C("posts")
+	fmt.Println("id:")
+	fmt.Println(id)
+
+	err = collection.Remove(bson.M{"id": bson.ObjectIdHex(id)})
+		if err != nil {
+			fmt.Println(err)
+		}
+		return nil
+}
 
 func GetAllPosts(Title string) ([]*Post, error){
 
